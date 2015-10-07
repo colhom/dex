@@ -6,7 +6,7 @@ metadata:
     role: worker
   name: dex-worker
 spec:
-  replicas: 1
+  replicas: {{.WorkerCount}}
   selector:
     app: dex
     role: worker
@@ -21,9 +21,9 @@ spec:
             name: dex-worker
             env:
               - name: DEX_WORKER_ISSUER
-                value: http://172.17.4.99:30556
+                value: {{.K8sHost}}
               - name: DEX_WORKER_DB_URL
-                value: postgres://postgres@dex-postgres.default:5432/postgres?sslmode=disable
+                value: {{.PostgresUrl}}
               - name: DEX_WORKER_EMAIL_CFG
                 value: /opt/dex/email/emailer.json
               - name: DEX_WORKER_LISTEN
@@ -31,7 +31,8 @@ spec:
             command:
               - "sh"
               - "-c"
-              - "/opt/dex/bin/dex-worker --key-secrets=$(cat /etc/dex/key-secrets)"
+              - "/opt/dex/bin/dexctl --db-url $DEX_WORKER_DB_URL set-connector-configs /etc/dex/connectors-json &&
+              /opt/dex/bin/dex-worker --key-secrets=$(cat /etc/dex/key-secrets)"
             ports:
             - containerPort: 5556
               name: worker-port

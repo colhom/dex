@@ -21,7 +21,7 @@ spec:
             name: dex-overlord
             env:
               - name: DEX_OVERLORD_DB_URL
-                value: postgres://postgres@dex-postgres.default:5432/postgres?sslmode=disable
+                value: {{.PostgresUrl}}
               - name: DEX_OVERLORD_ADMIN_LISTEN
                 value: http://0.0.0.0:5557
             command:
