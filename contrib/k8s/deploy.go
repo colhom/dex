@@ -61,6 +61,8 @@ func main() {
         params.ConnectorsJSON = base64.StdEncoding.EncodeToString(cJsonBytes)
     }
 
+    params.KeySecrets = base64.StdEncoding.EncodeToString([]byte(params.KeySecrets))
+
     if deployPostgres && params.PostgresUrl != DEFAULT_POSTGRES_URL {
         panic(fmt.Errorf("Defining postgres-url and deploy-postgres is not supported"))
     }
@@ -103,10 +105,7 @@ func main() {
 
     genPath := path.Join(".","gen")
 
-    if output,err := exec.Command("kubectl","delete","-f",genPath).CombinedOutput(); err != nil {
-        fmt.Printf("output: %s\n",output)
-        panic(err)
-    }
+    _,_ = exec.Command("kubectl","delete","-f",genPath).CombinedOutput()
 
     if output,err := exec.Command("kubectl","create","-f",genPath).CombinedOutput(); err != nil {
         fmt.Printf("output: %s\n",output)
