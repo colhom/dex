@@ -41,7 +41,13 @@ spec:
               - name: dex
                 mountPath: "/etc/dex"
                 readOnly: true
+              - name: ssl
+                mountPath: "/etc/ssl/certs"
+                readOnly: true
       volumes:
         - name: dex
           secret:
             secretName: "dex"
+        - name: ssl
+          hostPath:
+            path: "/usr/share/ca-certificates"

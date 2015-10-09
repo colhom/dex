@@ -42,7 +42,7 @@ func main() {
 
     flag.BoolVar(&deployPostgres,"deploy-postgres",false,"deploy postgres pod and service at <postgres-url>")
 
-	flag.StringVar(&params.KeySecrets, "key-secrets", "ZUhoNGVIaDRlSGg0ZUhoNGVIaDRlSGg0ZUhoNGVIaDRlSGg0ZUhoNGVIZz0=", "base64 key used to encrypt secrets")
+	flag.StringVar(&params.KeySecrets, "key-secrets", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "base64 key used to encrypt secrets")
 
 	flag.StringVar(&params.PostgresUrl, "postgres-url", DEFAULT_POSTGRES_URL , "postgres database url")
 
@@ -62,10 +62,6 @@ func main() {
     }
 
     params.KeySecrets = base64.StdEncoding.EncodeToString([]byte(params.KeySecrets))
-
-    if deployPostgres && params.PostgresUrl != DEFAULT_POSTGRES_URL {
-        panic(fmt.Errorf("Defining postgres-url and deploy-postgres is not supported"))
-    }
 
 	if err := os.RemoveAll(GEN_FOLDER); err != nil {
 		panic(err)
